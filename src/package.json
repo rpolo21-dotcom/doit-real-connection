@@ -1,0 +1,12 @@
+{
+  "name": "doit-deploy-bootstrap",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bootstrap Vercel deployment by extracting the pinned DoIT 1.3.1 source archive.",
+  "scripts": {
+    "postinstall": "cat doit-source.part-* > .doit-source.tar.gz && tar -xzf .doit-source.tar.gz -C . && rm -f .doit-source.tar.gz doit-source.part-*"
+  },
+  "dependencies": {
+    "web-push": "3.6.7"
+  }
+}
