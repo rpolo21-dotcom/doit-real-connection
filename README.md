@@ -94,13 +94,14 @@ Los enlaces de planes necesitan que la persona invitada se registre o inicie ses
 
 ## Publicación de la versión 1.3.1 en Vercel
 
-El repositorio contiene `doit-source.tar.gz` como archivo fuente de despliegue. Para publicar desde GitHub:
+La fuente de DoIT 1.3.1 está empaquetada en seis fragmentos binarios dentro de `src/`. El `package.json` de arranque ejecuta un `postinstall` que reconstruye y extrae el paquete, dejando los archivos reales de la app y las funciones API en la raíz de Vercel. El proceso se verificó localmente: crea `index.html`, `app.js` (63 KB), `api/config.js`, `api/push/send.js` y `vercel.json`.
+
+Para conectar el repositorio al proyecto Vercel existente:
 
 1. En Vercel abre el proyecto `doit-real-connections` → **Settings → Git** y conecta `rpolo21-dotcom/doit-real-connection`, rama `main`.
-2. En **Settings → Build and Development Settings**, usa Framework Preset **Other**, Root Directory `/`, deja Build Command y Output Directory vacíos y configura Node.js **22.x**.
-3. Configura como Install Command: `tar -xzf doit-source.tar.gz -C . && npm install --omit=dev`.
-4. En Environment Variables conserva las seis variables indicadas arriba para Production (y Preview si se usarán previews). No copies valores secretos a GitHub ni a chats.
-5. Lanza un nuevo Production Deployment desde `main`.
+2. En **Settings → Build and Development Settings**, usa Framework Preset **Other**, Root Directory `src`, Node.js **22.x**, Install Command `npm install`, y deja Build Command y Output Directory vacíos.
+3. En Environment Variables conserva las seis variables indicadas arriba en Production (y Preview si se usarán previews). No copies valores secretos a GitHub ni a chats.
+4. Lanza un nuevo Production Deployment desde `main`.
 
 **Comprobación obligatoria después del despliegue:** `https://doit-real-connections.vercel.app/api/config` debe responder HTTP 200 con JSON de configuración pública; `/api/push/send` debe existir (un GET responde 405, porque solo acepta POST). La página principal en HTTP 200 no basta: también debe iniciar sesión y cargar datos de Supabase.
 
